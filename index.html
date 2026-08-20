@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#f5f1ff"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="ADHD Vardag"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <link rel="apple-touch-icon" href="icon.svg"/>
+  <link rel="stylesheet" href="style.css"/>
+  <title>ADHD Vardag</title>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div>
+        <h1 id="pageTitle">Idag</h1>
+        <p id="todayLabel"></p>
+      </div>
+      <button class="iconBtn" id="settingsBtn" aria-label="Inställningar">⚙️</button>
+    </header>
+
+    <main>
+      <section class="screen active" data-screen="today">
+        <div class="hero card">
+          <div>
+            <span class="eyebrow">Dagens fokus</span>
+            <h2>En sak i taget 💜</h2>
+            <p>Gör det lilla först. Resten kan vänta.</p>
+          </div>
+          <button class="primary" data-go="stuck">Jag har fastnat</button>
+        </div>
+
+        <div class="card">
+          <div class="sectionHead"><h3>Dagens uppgifter</h3><button class="linkBtn" id="resetToday">Återställ</button></div>
+          <div id="todayTasks"></div>
+          <form id="taskForm" class="inlineForm">
+            <input id="taskInput" placeholder="Lägg till en liten uppgift"/>
+            <button class="primary" type="submit">+</button>
+          </form>
+        </div>
+
+        <div class="grid2">
+          <button class="card actionCard" data-go="smoke"><span>🚭</span><b>Rökfri</b><small id="smokeMini"></small></button>
+          <button class="card actionCard" data-go="money"><span>💰</span><b>Pengar</b><small id="moneyMini"></small></button>
+        </div>
+
+        <div class="card tip">
+          <span class="eyebrow">Dagens lilla tips</span>
+          <p id="dailyTip"></p>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="calendar">
+        <div class="card">
+          <h3>Kalender</h3>
+          <p class="muted">Skriv in tider och saker du vill komma ihåg.</p>
+          <form id="eventForm" class="stackForm">
+            <input id="eventTitle" placeholder="Vad händer?" required/>
+            <input id="eventDate" type="datetime-local" required/>
+            <button class="primary" type="submit">Lägg till</button>
+          </form>
+        </div>
+        <div class="card"><div id="eventsList"></div></div>
+      </section>
+
+      <section class="screen" data-screen="routines">
+        <div class="card">
+          <h3>Rutiner</h3>
+          <p class="muted">Tryck när det är gjort. Ny dag = ny start.</p>
+          <div id="routineList"></div>
+        </div>
+        <div class="card">
+          <h3>Städning i små bitar</h3>
+          <div id="cleaningList"></div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="money">
+        <div class="card">
+          <span class="eyebrow">Idag</span>
+          <h2 id="spentToday">0 kr</h2>
+          <p class="muted">spenderat idag</p>
+          <form id="purchaseForm" class="stackForm">
+            <input id="purchaseName" placeholder="Vad köpte du?" required/>
+            <input id="purchaseAmount" inputmode="decimal" placeholder="Belopp, t.ex. 42" required/>
+            <select id="purchaseCategory">
+              <option>Mat</option><option>Fika</option><option>Transport</option><option>Shopping</option><option>Räkning</option><option>Övrigt</option>
+            </select>
+            <button class="primary" type="submit">+ Lägg till köp</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="sectionHead"><h3>Dagens köp</h3><button class="linkBtn" id="clearPurchases">Rensa idag</button></div>
+          <div id="purchaseList"></div>
+        </div>
+        <div class="card">
+          <h3>Sparmål</h3>
+          <div class="progress"><div id="saveBar"></div></div>
+          <div class="sectionHead"><b id="saveText">0 / 10 000 kr</b><button class="linkBtn" id="editSavings">Ändra</button></div>
+        </div>
+        <div class="card">
+          <h3>Räkningskoll</h3>
+          <div id="billsList"></div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="more">
+        <div class="card">
+          <h3>Brain dump</h3>
+          <form id="brainForm" class="inlineForm">
+            <input id="brainInput" placeholder="Skriv ner det innan det försvinner"/>
+            <button class="primary" type="submit">+</button>
+          </form>
+          <div id="brainList"></div>
+        </div>
+        <div class="card">
+          <h3>Mer</h3>
+          <button class="menuBtn" data-go="smoke">🚭 Rökfri resa</button>
+          <button class="menuBtn" data-go="stuck">🛟 Jag har fastnat</button>
+          <button class="menuBtn" id="exportBtn">📤 Exportera mina data</button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="smoke">
+        <button class="backBtn" data-go="today">‹ Tillbaka</button>
+        <div class="card smokeHero">
+          <span class="eyebrow">Min rökfria resa</span>
+          <h2>10 september 2026</h2>
+          <p id="quitCountdown"></p>
+        </div>
+        <div class="grid2">
+          <div class="card stat"><b id="smokeDays">0</b><span>rökfria dagar</span></div>
+          <div class="card stat"><b id="smokeSaved">0 kr</b><span>sparat</span></div>
+        </div>
+        <div class="card">
+          <h3>Jag är röksugen</h3>
+          <p id="cravingText">Ett sug går över. Starta med 5 minuter: drick vatten, byt rum och gör något med händerna.</p>
+          <button class="primary full" id="cravingBtn">Ge mig ny pepp</button>
+        </div>
+        <div class="card">
+          <h3>Beräkna sparandet</h3>
+          <label>Hur mycket kostar rökningen per dag?</label>
+          <input id="smokeDailyCost" inputmode="decimal" placeholder="t.ex. 70"/>
+          <button class="secondary full" id="saveSmokeCost">Spara</button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="stuck">
+        <button class="backBtn" data-go="today">‹ Tillbaka</button>
+        <div class="card stuck">
+          <span class="bigEmoji">🛟</span>
+          <h2>Okej. Bara nästa lilla steg.</h2>
+          <ol>
+            <li>Res dig upp.</li>
+            <li>Ta några klunkar vatten.</li>
+            <li>Välj något som tar mindre än 5 minuter.</li>
+            <li>Gör bara det.</li>
+          </ol>
+          <button class="primary full" id="tinyTaskBtn">Ge mig en 2-minutersuppgift</button>
+          <p class="tinyTask" id="tinyTask"></p>
+        </div>
+      </section>
+    </main>
+
+    <nav>
+      <button data-go="today" class="active">🏠<span>Idag</span></button>
+      <button data-go="calendar">📅<span>Kalender</span></button>
+      <button data-go="routines">✅<span>Rutiner</span></button>
+      <button data-go="money">💰<span>Pengar</span></button>
+      <button data-go="more">•••<span>Mer</span></button>
+    </nav>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
